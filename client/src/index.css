@@ -104,6 +104,8 @@ body {
   text-align: center;
   overflow: auto;
   max-height: 335px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 .review-container {

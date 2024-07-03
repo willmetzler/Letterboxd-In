@@ -1,32 +1,32 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Movies from "./Movies";
 import MovieForm from "./MovieForm";
 import EditMovies from "./EditMovies";
 import UserPanel from "./UserPanel";
-import { UserContext } from "./UserContext";
 
 function Diary() {
-    const { user, setUser } = useContext(UserContext);
     const [movies, setMovies] = useState([]);
     const [editMovie, setEditMovie] = useState(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        if (user) {
-            fetchMovies();
-        }
-    }, [user]);
+        fetch('/api/get-session')
+            .then(res => res.json())
+            .then(data => {
+                if (data.id) {
+                    setUser(data);
+                    fetch("/api/movies")
+                        .then((res) => res.json())
+                        .then((movieData) => setMovies(movieData.reverse())); // Reverse the order here
+                }
+            });
+    }, []);
 
-    const fetchMovies = () => {
-        fetch("/api/movies")
-            .then((res) => res.json())
-            .then((movieData) => setMovies(movieData));
-    };
-
-    const handleEdit = (movie) => {
+    function handleEdit(movie) {
         setEditMovie(movie);
-    };
+    }
 
-    const handleEditFormSubmit = (updatedMovie) => {
+    function handleEditFormSubmit(updatedMovie) {
         fetch(`/api/movies/${updatedMovie.id}`, {
             method: 'PATCH',
             headers: {
@@ -34,20 +34,15 @@ function Diary() {
             },
             body: JSON.stringify(updatedMovie),
         })
-        .then(res => res.json())
-        .then(updatedMovieData => {
-            setMovies(movies.map(movie =>
-                movie.id === updatedMovieData.id ? updatedMovieData : movie
-            ));
-            setEditMovie(null);
-        })
-        .catch(error => console.error('Error updating movie:', error));
-    };
-
-    const handleLogin = (userData) => {
-        setUser(userData);
-        fetchMovies();
-    };
+            .then(res => res.json())
+            .then(updatedMovieData => {
+                setMovies(movies.map(movie =>
+                    movie.id === updatedMovieData.id ? updatedMovieData : movie
+                ));
+                setEditMovie(null);
+            })
+            .catch(error => console.error('Error updating movie:', error));
+    }
 
     return (
         <div id="movie-diary">
@@ -77,7 +72,7 @@ function Diary() {
             ) : (
                 <>
                     <h2 className="subheader">Log in or sign up to add a film</h2>
-                    <UserPanel onLogin={handleLogin} />
+                    <UserPanel onLogin={setUser} />
                 </>
             )}
         </div>

@@ -12,7 +12,7 @@ function MovieForm({ setMovies }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        fetch("/api/movies", {
+        fetch("/api/movies", {  // Ensure the URL matches the backend route
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,20 +23,21 @@ function MovieForm({ setMovies }) {
         .then(res => res.json())
         .then(newMovieObj => {
             setMovieFormData({ title: '', director: '', year: '', image: '', rating: '', review: '' });
-            setMovies(movies => [...movies, newMovieObj]);
-        });
+            setMovies(movies => [newMovieObj, ...movies]); // Add new movie to the start of the array
+        })
+        .catch(error => console.error('Error adding movie:', error));
     }
 
     return (
         <form onSubmit={handleSubmit} className="movie-form">
             <h2 id="log-title">Log a Film!</h2>
             <label className="movie-form-label" htmlFor="title">Title: </label>
-            <input className='input-box' name="title"
+            <input className='input-box' name="title" 
                 value={movieFormData.title}
                 onChange={(event) => setMovieFormData({ ...movieFormData, title: event.target.value })}
             />
             <label className="movie-form-label" htmlFor="director">Director: </label>
-            <input className='input-box' name="director"
+            <input className='input-box' name="director" 
                 value={movieFormData.director}
                 onChange={(event) => setMovieFormData({ ...movieFormData, director: event.target.value })}
             />
@@ -47,7 +48,7 @@ function MovieForm({ setMovies }) {
             />
             <label className="movie-form-label" htmlFor="year">Year: </label>
             <input className='input-box' name="year"
-                type="number"
+                type="number" 
                 value={movieFormData.year}
                 onChange={(event) => setMovieFormData({ ...movieFormData, year: event.target.value })}
             />
@@ -61,10 +62,10 @@ function MovieForm({ setMovies }) {
                     <option key={index} value={(index + 1) / 2}>
                         {(index + 1) / 2}
                     </option>
-                ))}
+                ))} 
             </select>
             <label className="movie-form-label" htmlFor="review">Review: </label>
-            <textarea className='input-box' id="review-area" name="review"
+            <textarea className='input-box' id="review-area" name="review" 
                 value={movieFormData.review}
                 onChange={(event) => setMovieFormData({ ...movieFormData, review: event.target.value })}
             />

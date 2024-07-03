@@ -1,40 +1,28 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import UnwatchedMovie from "./UnwatchedMovie";
 import WatchlistForm from "./WatchlistForm";
 import UserPanel from "./UserPanel";
-import { UserContext } from "./UserContext";
 
 function Watchlist() {
-    const { user, setUser } = useContext(UserContext);
     const [unwatchedMovies, setUnwatchedMovies] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        if (user) {
-            fetchWatchlist();
-        }
-    }, [user]);
-
-    const fetchWatchlist = () => {
-        fetch("/api/watchlist")
+        fetch('/api/get-session')
             .then(res => res.json())
-            .then(movieData => setUnwatchedMovies(movieData));
-    };
+            .then(data => {
+                if (data.id) {
+                    setUser(data);
+                    fetch("/api/watchlisted")
+                        .then(res => res.json())
+                        .then(movieData => setUnwatchedMovies(movieData.reverse())); // Reverse the order here
+                }
+            });
+    }, []);
 
     const mappedUnwatched = unwatchedMovies.map(unwatchedMovie => {
-        return (
-            <UnwatchedMovie
-                key={unwatchedMovie.id}
-                unwatchedMovies={unwatchedMovies}
-                unwatchedMovie={unwatchedMovie}
-                setUnwatchedMovies={setUnwatchedMovies}
-            />
-        );
+        return (<UnwatchedMovie key={unwatchedMovie.id} unwatchedMovies={unwatchedMovies} unwatchedMovie={unwatchedMovie} setUnwatchedMovies={setUnwatchedMovies} />);
     });
-
-    const handleLogin = (userData) => {
-        setUser(userData);
-        fetchWatchlist();
-    };
 
     return (
         <>
@@ -53,7 +41,7 @@ function Watchlist() {
             ) : (
                 <>
                     <h2 className="subheader">Log in or sign up to add a film</h2>
-                    <UserPanel onLogin={handleLogin} />
+                    <UserPanel onLogin={setUser} />
                 </>
             )}
         </>

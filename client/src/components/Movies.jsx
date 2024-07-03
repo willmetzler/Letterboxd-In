@@ -31,9 +31,9 @@ function Movies({ movie, movies, setMovies, handleEdit }) {
                 {displayMode === 2 && (
                     <div className="information">
                         <h1 className="title">{movie.title}</h1>
-                        <h3 className="director">Director: {movie.director}</h3>
-                        <h4 className="year">Year: {movie.year}</h4>
-                        <h4 className="rating">Rating: {movie.rating}</h4>
+                        <h3 className="director">{movie.director}</h3>
+                        <h4 className="year">{movie.year}</h4>
+                        <h4 className="rating">{movie.rating}/10</h4>
                         <div className="button-container">
                             <button className="edit-button" onClick={handleEdit}>
                                 Edit

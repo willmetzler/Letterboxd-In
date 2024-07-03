@@ -15,33 +15,34 @@ function UnwatchedMovie({ unwatchedMovie, unwatchedMovies, setUnwatchedMovies })
         const filteredMovies = unwatchedMovies.filter(m => m.id !== unwatchedMovie.id);
         setUnwatchedMovies(filteredMovies);
 
-        fetch(`/api/watchlist/${unwatchedMovie.id}`, {
+        fetch(`/api/watchlisted/${unwatchedMovie.id}`, {
             method: 'DELETE'
         })
-            .then(response => {
-                const loggedMovie = {
-                    title: unwatchedMovie.title,
-                    director: unwatchedMovie.director,
-                    year: unwatchedMovie.year,
-                    image: unwatchedMovie.image,
-                    rating: rating,
-                    review: review
-                };
+        .then(response => {
+            const loggedMovie = {
+                title: unwatchedMovie.title,
+                director: unwatchedMovie.director,
+                year: unwatchedMovie.year,
+                image: unwatchedMovie.image,
+                rating: rating,
+                review: review
+            };
 
-                fetch("/api/movies", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(loggedMovie)
-                })
-                    .then(response => response.json())
-                    .then(newLoggedMovie => {
-                        const updatedUnwatchedMovies = unwatchedMovies.filter(movie => movie.id !== unwatchedMovie.id);
-                        setUnwatchedMovies(updatedUnwatchedMovies);
-                    })
-                    .catch(error => console.error('Error logging movie:', error));
-            });
+            fetch("/api/movies", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loggedMovie)
+            })
+            .then(response => response.json())
+            .then(newLoggedMovie => {
+                const updatedUnwatchedMovies = unwatchedMovies.filter(movie => movie.id !== unwatchedMovie.id);
+                setUnwatchedMovies(updatedUnwatchedMovies);
+            })
+            .catch(error => console.error('Error logging movie:', error));
+        })
+        .catch(error => console.error('Error deleting from watchlist:', error));
     }
 
     function handleRemove(event) {
@@ -52,9 +53,10 @@ function UnwatchedMovie({ unwatchedMovie, unwatchedMovies, setUnwatchedMovies })
             const filteredMovies = unwatchedMovies.filter(m => m.id !== unwatchedMovie.id);
             setUnwatchedMovies(filteredMovies);
 
-            fetch(`/api/watchlist/${unwatchedMovie.id}`, {
+            fetch(`/api/watchlisted/${unwatchedMovie.id}`, {
                 method: 'DELETE'
-            });
+            })
+            .catch(error => console.error('Error deleting movie:', error));
         } else {
             console.log("Deletion cancelled by user.");
         }

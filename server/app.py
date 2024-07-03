@@ -2,9 +2,6 @@ from flask import request, session, jsonify
 from config import app, db, bcrypt
 from models import User, Movie, Watchlist
 
-
-# User Log-in/Sign-up
-
 @app.get('/api/users')
 def index_users():
     return jsonify([u.to_dict() for u in User.query.all()]), 200
@@ -58,9 +55,7 @@ def logout():
     session.pop('user_id')
     return {}, 204
 
-
 # Movies
-
 @app.get('/api/movies')
 def get_movies():
     user_id = session.get('user_id')
@@ -114,45 +109,43 @@ def delete_movie(id):
     db.session.commit()
     return '', 204
 
-# Watchlist 
-
-@app.get('/api/watchlist')
-def get_watchlist():
+# Watchlist
+@app.get('/api/watchlisted')
+def get_watchlisted():
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({'error': 'Unauthorized'}), 401
-    watchlist = Watchlist.query.filter_by(user_id=user_id).all()
-    return jsonify([movie.to_dict() for movie in watchlist]), 200
+    watchlisted_items = Watchlist.query.filter_by(user_id=user_id).all()
+    return jsonify([item.to_dict() for item in watchlisted_items]), 200
 
-@app.post('/api/watchlist')
-def add_to_watchlist():
+@app.post('/api/watchlisted')
+def create_watchlisted():
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({'error': 'Unauthorized'}), 401
     data = request.json
-    new_watchlist_movie = Watchlist(
+    new_watchlisted = Watchlist(
         title=data['title'],
         director=data['director'],
         year=data['year'],
         image=data['image'],
         user_id=user_id
     )
-    db.session.add(new_watchlist_movie)
+    db.session.add(new_watchlisted)
     db.session.commit()
-    return jsonify(new_watchlist_movie.to_dict()), 201
+    return jsonify(new_watchlisted.to_dict()), 201
 
-@app.delete('/api/watchlist/<int:id>')
-def remove_from_watchlist(id):
+@app.delete('/api/watchlisted/<int:id>')
+def delete_watchlisted(id):
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({'error': 'Unauthorized'}), 401
-    movie = Watchlist.query.get(id)
-    if not movie or movie.user_id != user_id:
+    watchlisted = Watchlist.query.get(id)
+    if not watchlisted or watchlisted.user_id != user_id:
         return jsonify({'error': 'Not found or Unauthorized'}), 404
-    db.session.delete(movie)
+    db.session.delete(watchlisted)
     db.session.commit()
     return '', 204
-
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
