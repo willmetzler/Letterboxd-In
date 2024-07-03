@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from "react";
+import { UserContext } from "./UserContext";
 
 function Login({ onLogin }) {
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const { setUser } = useContext(UserContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,24 +13,32 @@ function Login({ onLogin }) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify({ username, password })
         })
-            .then(res => res.json())
-            .then(user => {
-                if (user.id) {
-                    onLogin(user);
-                } else {
-                    alert(user.error);
-                }
-            });
+        .then(res => res.json())
+        .then(data => {
+            if (data.id) {
+                setUser(data);
+                onLogin(data);
+            } else {
+                console.error('Login failed');
+            }
+        });
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h3>Log In</h3>
-            <input type="text" name="username" placeholder="Username" value={formData.username} onChange={handleChange} required />
-            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-            <button type="submit">Log In</button>
+            <label>
+                Username:
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </label>
+            <br />
+            <label>
+                Password:
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </label>
+            <br />
+            <button type="submit">Login</button>
         </form>
     );
 }

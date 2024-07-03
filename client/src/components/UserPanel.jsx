@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Signup from "./Signup";
 import Login from "./Login";
 
@@ -6,7 +5,8 @@ function UserPanel({ onLogin }) {
     return (
         <div>
             <Signup onLogin={onLogin} />
-            <br /><br />
+            <br />
+            <br />
             <Login onLogin={onLogin} />
         </div>
     );

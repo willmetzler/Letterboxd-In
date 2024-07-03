@@ -58,6 +58,60 @@ def logout():
     return {}, 204
 
 
+#Movies
+@app.get('/api/movies')
+def get_movies():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    movies = Movie.query.filter_by(user_id=user_id).all()
+    return jsonify([movie.to_dict() for movie in movies]), 200
+
+@app.post('/api/movies')
+def create_movie():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    data = request.json
+    new_movie = Movie(
+        title=data['title'],
+        director=data['director'],
+        year=data['year'],
+        image=data['image'],
+        rating=data['rating'],
+        review=data['review'],
+        user_id=user_id
+    )
+    db.session.add(new_movie)
+    db.session.commit()
+    return jsonify(new_movie.to_dict()), 201
+
+@app.patch('/api/movies/<int:id>')
+def update_movie(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    movie = Movie.query.get(id)
+    if not movie or movie.user_id != user_id:
+        return jsonify({'error': 'Not found or Unauthorized'}), 404
+    data = request.json
+    for key, value in data.items():
+        setattr(movie, key, value)
+    db.session.commit()
+    return jsonify(movie.to_dict()), 200
+
+@app.delete('/api/movies/<int:id>')
+def delete_movie(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    movie = Movie.query.get(id)
+    if not movie or movie.user_id != user_id:
+        return jsonify({'error': 'Not found or Unauthorized'}), 404
+    db.session.delete(movie)
+    db.session.commit()
+    return '', 204
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

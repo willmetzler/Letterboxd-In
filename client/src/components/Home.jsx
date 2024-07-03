@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { UserContext } from './UserContext';
 import UserPanel from './UserPanel';
 
 function Home() {
-    const { user, handleLogin } = useOutletContext();
+    const { user } = useContext(UserContext);
 
     return (
         <>
-            <h2 className="subheader">Welcome to Letterboxd In: A movie review app for the introvert!</h2>
+            <h2 className="subheader">Welcome to Letterboxd In{user ? ` ${user.username}` : ''}!</h2>
             {user ? (
                 <>
                     <h3 id="site-directory">Site Directory:</h3>
@@ -21,11 +22,12 @@ function Home() {
                     <h4 className="directory-details">Learn more about Letterboxd In!</h4>
                 </>
             ) : (
-                <UserPanel onLogin={handleLogin} />
+                <UserPanel />
             )}
         </>
     );
 }
 
 export default Home;
+
 

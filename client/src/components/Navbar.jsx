@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from './UserContext';
 
-function Navbar({ user, onLogout }) {
+function Navbar() {
+    const { user, setUser } = useContext(UserContext);
+
+    const handleLogout = () => {
+        fetch('/api/logout', {
+            method: 'DELETE'
+        }).then(() => {
+            setUser(null);
+        });
+    };
+
     return (
         <div>
             <Link className='navbar' to="/">Home</Link>
@@ -15,10 +26,11 @@ function Navbar({ user, onLogout }) {
             <Link className='navbar' to="/contact">Contact</Link>
             &nbsp; &nbsp;
             {user ? (
-                <Link className='navbar' onClick={onLogout}>Log out</Link>
+                <Link className='navbar' onClick={handleLogout}>Log out</Link>
             ) : null}
         </div>
     );
 }
 
 export default Navbar;
+

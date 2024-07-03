@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 function Movies({ movie, movies, setMovies, handleEdit }) {
-
     const [displayMode, setDisplayMode] = useState(1);
 
     const toggleDisplayMode = () => {
@@ -9,17 +8,15 @@ function Movies({ movie, movies, setMovies, handleEdit }) {
     };
 
     function handleRemove(e) {
-        e.stopPropagation()
+        e.stopPropagation();
         const isConfirmed = window.confirm("Are you sure you want to delete this movie?");
-
         if (isConfirmed) {
             const filteredMovies = movies.filter(m => m.id !== movie.id);
             setMovies(filteredMovies);
-
-            fetch(`http://localhost:3000/movies/${movie.id}`, {
+            fetch(`/api/movies/${movie.id}`, {
                 method: 'DELETE'
             })
-                .catch(error => console.error('Error deleting movie:', error));
+            .catch(error => console.error('Error deleting movie:', error));
         } else {
             console.log("Deletion cancelled by user.");
         }
@@ -31,7 +28,6 @@ function Movies({ movie, movies, setMovies, handleEdit }) {
                 {displayMode === 1 && (
                     <img className="posters" src={movie.image} alt={movie.title} />
                 )}
-
                 {displayMode === 2 && (
                     <div className="information">
                         <h1 className="title">{movie.title}</h1>
@@ -48,7 +44,6 @@ function Movies({ movie, movies, setMovies, handleEdit }) {
                         </div>
                     </div>
                 )}
-
                 {displayMode === 3 && (
                     <div className="information">
                         <p className="review-text">{movie.review}</p>
