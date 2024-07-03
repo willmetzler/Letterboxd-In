@@ -2,6 +2,8 @@
 
 Modeled as an offline/privatle alternative to the popular movie reviewing social media app, Letterboxd In is a movie review web application that allows users to log in, sign up, maintain a movie diary, and create a watchlist of movies they plan to watch. This project is built with a React frontend and a Flask/Python backend.
 
+** This is an updated version of my earlier Flatiron School phase 2 project. This version was rebuilt to utilize a Python/Flask backend instead of a json server, and added user verification and sign-up/log-in functionality**
+
 ## Features
 User Authentication: Users can sign up, log in, and log out.
 
