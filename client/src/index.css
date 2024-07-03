@@ -31,10 +31,6 @@ body {
     color: #fb8304;
 }
 
-.about-text {
-    max-width: 50%;
-}
-
 .inline-text {
   color: #fb8304;
 }
@@ -262,6 +258,7 @@ input {
   border-radius: 0.5em;
   display: flex;
   justify-content: space-around;
+  padding-bottom: 3em;
 }
 
 .form-container {
@@ -282,4 +279,27 @@ input {
   border: solid black 2px;
   border-radius: 0.5em;
   background: #04e354;
+}
+
+.directory-container {
+  margin-bottom: 5em;
+  margin-left:2em;
+  border: 0.25em, solid, #43bbf3;
+  border-radius: 1em;
+  padding-left: 1em;
+  display:flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.about-container {
+  margin-left: 2em;
+  margin-bottom: 5em;
+  border: 0.25em, solid, #43bbf3;
+  border-radius: 1em;
+  padding-left: 2em;
+  padding-right:2em;
+  display:flex;
+  flex-direction: column;
+  width: 50%;
 }

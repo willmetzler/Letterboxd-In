@@ -10,7 +10,7 @@ function Home() {
         <>
             <h2 className="subheader">Welcome to Letterboxd In{user ? ` ${user.first_name}` : ''}!</h2>
             {user ? (
-                <div style={{marginBottom:'5em'}}>
+                <div className="directory-container">
                     <h3 id="site-directory">Site Directory:</h3>
                     <Link to="/diary"><h3 className="directory-section">Movie Diary</h3></Link>
                     <h4 className="directory-details">A place to keep track of your favorite movies, give them ratings, and log your reviews!</h4>

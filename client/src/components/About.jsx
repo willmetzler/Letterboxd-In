@@ -5,7 +5,7 @@ function About () {
     return(
         <div>
             <h2 className="subheader">What is Letterboxd In?</h2>
-            <div style={{marginLeft:'2em', marginBottom:'5em'}}>
+            <div className='about-container'>
                 <p className='about-text'>In 2011, now social media phenomenon <em>Letterboxd</em> launched, advertising itself as "the GoodReads for film". Today, the movie rating app boasts 10 million users and is the go-to online destination for discourse on films both new and old. With an emphasis on ratings and reviews, Letterboxd asks you to put your opinions out for all to see... <span className='inline-text'>but what if you wanted to keep track of your favorite movies without the performative ask of social media?</span></p>
                 <br/>
                 <p className='about-text'>Here at Letterbox'd In, you can be free to keep track of your wishlist and movie diary without feeling the need to write reviews your friends will find funny or without feeling embarrassed by what you watch. It's just for you!</p>
