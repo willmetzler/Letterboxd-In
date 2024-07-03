@@ -13,12 +13,18 @@ class User(db.Model, SerializerMixin):
     last_name = db.Column(db.String, nullable=False)
     _hashed_password = db.Column(db.String)
 
-    # Relationships
     movies = relationship('Movie', backref='user')
     watchlist = relationship('Watchlist', backref='user')
 
     serialize_rules = ('-movies.user', '-watchlist.user')
-
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+        }
 
 class Movie(db.Model, SerializerMixin):
     __tablename__ ='movies_table'
