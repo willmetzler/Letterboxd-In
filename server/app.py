@@ -2,7 +2,7 @@
 
 from flask import request, session
 from config import app, db
-from models import ExampleModel # import your models here!
+from models import User, Movie
 
 @app.get('/')
 def index():
