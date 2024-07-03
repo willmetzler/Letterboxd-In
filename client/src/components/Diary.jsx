@@ -2,15 +2,24 @@ import React, { useState, useEffect } from "react";
 import Movies from "./Movies";
 import MovieForm from "./MovieForm";
 import EditMovies from "./EditMovies";
+import UserPanel from "./UserPanel";
 
 function Diary() {
     const [movies, setMovies] = useState([]);
     const [editMovie, setEditMovie] = useState(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:3000/movies")
-            .then((res) => res.json())
-            .then((movieData) => setMovies(movieData));
+        fetch('/api/get-session')
+            .then(res => res.json())
+            .then(data => {
+                if (data.id) {
+                    setUser(data);
+                    fetch("http://localhost:3000/movies")
+                        .then((res) => res.json())
+                        .then((movieData) => setMovies(movieData));
+                }
+            });
     }, []);
 
     function handleEdit(movie) {
@@ -37,27 +46,35 @@ function Diary() {
 
     return (
         <div id="movie-diary">
-            <div className="edit-form">
-                {editMovie && <EditMovies movie={editMovie} onSubmit={handleEditFormSubmit} />}
-            </div>
-            <h2 className="subheader">My Movies</h2>
-            <div className="grid with-sidebar">
-                <div className="flex-container">
-                    {movies.map((movie) => (
-                        <Movies
-                            key={movie.id}
-                            movie={movie}
-                            movies={movies}
-                            setMovies={setMovies}
-                            handleEdit={() => handleEdit(movie)}
-                        />
-                    ))}
-                </div>
-
-                <div className="sidebar">
-                    <MovieForm className="movie-form" setMovies={setMovies} />
-                </div>
-            </div>
+            {user ? (
+                <>
+                    <div className="edit-form">
+                        {editMovie && <EditMovies movie={editMovie} onSubmit={handleEditFormSubmit} />}
+                    </div>
+                    <h2 className="subheader">My Movies</h2>
+                    <div className="grid with-sidebar">
+                        <div className="flex-container">
+                            {movies.map((movie) => (
+                                <Movies
+                                    key={movie.id}
+                                    movie={movie}
+                                    movies={movies}
+                                    setMovies={setMovies}
+                                    handleEdit={() => handleEdit(movie)}
+                                />
+                            ))}
+                        </div>
+                        <div className="sidebar">
+                            <MovieForm className="movie-form" setMovies={setMovies} />
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <h2 className="subheader">Log in or sign up to add a film</h2>
+                    <UserPanel onLogin={setUser} />
+                </>
+            )}
         </div>
     );
 }

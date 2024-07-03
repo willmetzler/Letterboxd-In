@@ -1,35 +1,51 @@
-import React, {useState, useEffect} from "react"
-import UnwatchedMovie from "./UnwatchedMovie"
-import WatchlistForm from "./WatchlistForm"
+import React, { useState, useEffect } from "react";
+import UnwatchedMovie from "./UnwatchedMovie";
+import WatchlistForm from "./WatchlistForm";
+import UserPanel from "./UserPanel";
 
-function Watchlist () {
-
-    const [unwatchedMovies, setUnwatchedMovies] = useState([])
+function Watchlist() {
+    const [unwatchedMovies, setUnwatchedMovies] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:3000/watchlisted")
-        .then(res => res.json())
-        .then(movieData => setUnwatchedMovies(movieData))
-    }, [])
+        fetch('/api/get-session')
+            .then(res => res.json())
+            .then(data => {
+                if (data.id) {
+                    setUser(data);
+                    fetch("http://localhost:3000/watchlisted")
+                        .then(res => res.json())
+                        .then(movieData => setUnwatchedMovies(movieData));
+                }
+            });
+    }, []);
 
-    const mappedUnwatched = unwatchedMovies.map( unwatchedMovie => {
-        return (<UnwatchedMovie key={unwatchedMovie.id} unwatchedMovies={unwatchedMovies} unwatchedMovie={unwatchedMovie} setUnwatchedMovies={setUnwatchedMovies} />)
-    })
+    const mappedUnwatched = unwatchedMovies.map(unwatchedMovie => {
+        return (<UnwatchedMovie key={unwatchedMovie.id} unwatchedMovies={unwatchedMovies} unwatchedMovie={unwatchedMovie} setUnwatchedMovies={setUnwatchedMovies} />);
+    });
 
     return (
         <>
-        <h2 className="subheader">My Watchlist</h2>
-            <div className="grid with-sidebar">
-                    <div className="flex-container">
-                        {mappedUnwatched}
+            {user ? (
+                <>
+                    <h2 className="subheader">My Watchlist</h2>
+                    <div className="grid with-sidebar">
+                        <div className="flex-container">
+                            {mappedUnwatched}
+                        </div>
+                        <div className="sidebar">
+                            <WatchlistForm unwatchedMovies={unwatchedMovies} setUnwatchedMovies={setUnwatchedMovies} />
+                        </div>
                     </div>
-
-                    <div className="sidebar">
-                        <WatchlistForm unwatchedMovies={unwatchedMovies} setUnwatchedMovies={setUnwatchedMovies} />
-                    </div>
-            </div>
+                </>
+            ) : (
+                <>
+                    <h2 className="subheader">Log in or sign up to add a film</h2>
+                    <UserPanel onLogin={setUser} />
+                </>
+            )}
         </>
-    )
+    );
 }
 
-export default Watchlist
+export default Watchlist;

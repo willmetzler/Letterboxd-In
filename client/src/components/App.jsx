@@ -1,22 +1,43 @@
-import { Outlet } from 'react-router-dom'
-import React from 'react'
-import Navbar from './Navbar'
+import React, { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import Navbar from './Navbar';
 
 function App() {
+    const [user, setUser] = useState(null);
 
+    useEffect(() => {
+        fetch('/api/get-session')
+            .then(res => res.json())
+            .then(data => {
+                if (data.id) {
+                    setUser(data);
+                }
+            });
+    }, []);
 
-  return (
-    <div>
-      <Navbar />
-      <div className="main-header">
-        <img id="main-logo" width={170} height={170} src="src/assets/letterboxdinlogofinal.png" />
-        <h1 id="main-title" >Letterboxd In</h1>
-      </div>
+    const handleLogin = (userData) => {
+        setUser(userData);
+    };
 
-      <Outlet />
+    const handleLogout = () => {
+        fetch('/api/logout', {
+            method: 'DELETE'
+        })
+        .then(() => {
+            setUser(null);
+        });
+    };
 
-    </div>
-  )
+    return (
+        <div>
+            <Navbar user={user} onLogout={handleLogout} />
+            <div className="main-header">
+                <img id="main-logo" width={170} height={170} src="src/assets/letterboxdinlogofinal.png" />
+                <h1 id="main-title">Letterboxd In</h1>
+            </div>
+            <Outlet context={{ user, handleLogin, handleLogout }} />
+        </div>
+    );
 }
 
-export default App
+export default App;
