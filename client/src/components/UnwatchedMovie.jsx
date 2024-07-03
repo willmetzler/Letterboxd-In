@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 function UnwatchedMovie({ unwatchedMovie, unwatchedMovies, setUnwatchedMovies }) {
-
     const [displayMode, setDisplayMode] = useState(1);
 
     const toggleDisplayMode = () => {
@@ -12,11 +11,11 @@ function UnwatchedMovie({ unwatchedMovie, unwatchedMovies, setUnwatchedMovies })
         const rating = prompt("Enter rating:");
         const review = prompt("Enter review:");
 
-        event.stopPropagation()
-        const filteredMovies = unwatchedMovies.filter(m => m.id !== unwatchedMovie.id)
-        setUnwatchedMovies(filteredMovies)
+        event.stopPropagation();
+        const filteredMovies = unwatchedMovies.filter(m => m.id !== unwatchedMovie.id);
+        setUnwatchedMovies(filteredMovies);
 
-        fetch(`http://localhost:3000/watchlisted/${unwatchedMovie.id}`, {
+        fetch(`/api/watchlist/${unwatchedMovie.id}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -29,7 +28,7 @@ function UnwatchedMovie({ unwatchedMovie, unwatchedMovies, setUnwatchedMovies })
                     review: review
                 };
 
-                fetch("http://localhost:3000/movies", {
+                fetch("/api/movies", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -42,27 +41,24 @@ function UnwatchedMovie({ unwatchedMovie, unwatchedMovies, setUnwatchedMovies })
                         setUnwatchedMovies(updatedUnwatchedMovies);
                     })
                     .catch(error => console.error('Error logging movie:', error));
-            })
+            });
     }
 
-
     function handleRemove(event) {
-        event.stopPropagation()
+        event.stopPropagation();
         const isConfirmed = window.confirm("Are you sure you want to delete this movie?");
 
         if (isConfirmed) {
-            const filteredMovies = unwatchedMovies.filter(m => m.id !== unwatchedMovie.id)
-            setUnwatchedMovies(filteredMovies)
+            const filteredMovies = unwatchedMovies.filter(m => m.id !== unwatchedMovie.id);
+            setUnwatchedMovies(filteredMovies);
 
-            fetch(`http://localhost:3000/watchlisted/${unwatchedMovie.id}`, {
+            fetch(`/api/watchlist/${unwatchedMovie.id}`, {
                 method: 'DELETE'
-            })
+            });
         } else {
             console.log("Deletion cancelled by user.");
         }
     }
-
-
 
     return (
         <div className="movie-item" onClick={toggleDisplayMode}>
@@ -91,4 +87,4 @@ function UnwatchedMovie({ unwatchedMovie, unwatchedMovies, setUnwatchedMovies })
     );
 }
 
-export default UnwatchedMovie
+export default UnwatchedMovie;

@@ -3,6 +3,7 @@ from config import app, db, bcrypt
 from models import User, Movie, Watchlist
 
 
+# User Log-in/Sign-up
 
 @app.get('/api/users')
 def index_users():
@@ -58,7 +59,8 @@ def logout():
     return {}, 204
 
 
-#Movies
+# Movies
+
 @app.get('/api/movies')
 def get_movies():
     user_id = session.get('user_id')
@@ -106,6 +108,45 @@ def delete_movie(id):
     if not user_id:
         return jsonify({'error': 'Unauthorized'}), 401
     movie = Movie.query.get(id)
+    if not movie or movie.user_id != user_id:
+        return jsonify({'error': 'Not found or Unauthorized'}), 404
+    db.session.delete(movie)
+    db.session.commit()
+    return '', 204
+
+# Watchlist 
+
+@app.get('/api/watchlist')
+def get_watchlist():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    watchlist = Watchlist.query.filter_by(user_id=user_id).all()
+    return jsonify([movie.to_dict() for movie in watchlist]), 200
+
+@app.post('/api/watchlist')
+def add_to_watchlist():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    data = request.json
+    new_watchlist_movie = Watchlist(
+        title=data['title'],
+        director=data['director'],
+        year=data['year'],
+        image=data['image'],
+        user_id=user_id
+    )
+    db.session.add(new_watchlist_movie)
+    db.session.commit()
+    return jsonify(new_watchlist_movie.to_dict()), 201
+
+@app.delete('/api/watchlist/<int:id>')
+def remove_from_watchlist(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    movie = Watchlist.query.get(id)
     if not movie or movie.user_id != user_id:
         return jsonify({'error': 'Not found or Unauthorized'}), 404
     db.session.delete(movie)

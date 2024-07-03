@@ -29,29 +29,24 @@ function Signup({ onLogin }) {
     };
 
     return (
+        <>
+        <h4 style={{color: '#43bbf3'}}>Create an account:</h4>
         <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </label>
-            <br />
-            <label>
-                Password:
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </label>
-            <br />
-            <label>
-                First Name:
-                <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-            </label>
-            <br />
-            <label>
-                Last Name:
-                <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-            </label>
-            <br />
-            <button type="submit">Sign Up</button>
+            <input className='user-input' placeholder='Username...' type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <br></br>
+            <br></br>
+            <input className='user-input' placeholder='Password...' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <br></br>
+            <br></br>
+            <input className='user-input' placeholder='First Name...' type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+            <br></br>
+            <br></br>
+            <input className='user-input' placeholder='Last Name...' type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            <br></br>
+            <br></br>
+            <button className='user-button' type="submit">Sign Up</button>
         </form>
+        </>
     );
 }
 

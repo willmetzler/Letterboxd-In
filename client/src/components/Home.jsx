@@ -8,7 +8,7 @@ function Home() {
 
     return (
         <>
-            <h2 className="subheader">Welcome to Letterboxd In{user ? ` ${user.username}` : ''}!</h2>
+            <h2 className="subheader">Welcome to Letterboxd In{user ? ` ${user.first_name}` : ''}!</h2>
             {user ? (
                 <>
                     <h3 id="site-directory">Site Directory:</h3>

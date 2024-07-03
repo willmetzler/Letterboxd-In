@@ -27,19 +27,18 @@ function Login({ onLogin }) {
     };
 
     return (
+        <>
+        <h4 style={{color: '#43bbf3'}}>Log in:</h4>
         <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </label>
-            <br />
-            <label>
-                Password:
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </label>
-            <br />
-            <button type="submit">Login</button>
+            <input className='user-input' placeholder='Username...' type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <br></br>
+            <br></br>
+            <input className='user-input' placeholder='Password...' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <br></br>
+            <br></br>
+            <button className='user-button' type="submit">Login</button>
         </form>
+        </>
     );
 }
 

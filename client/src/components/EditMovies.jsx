@@ -92,6 +92,7 @@ function EditMovies({ movie, onSubmit }) {
                         <div className="form-group">
                             <label htmlFor="review">Review: </label>
                             <textarea
+                                style={{height:'200px'}}
                                 className='input-box'
                                 name="review"
                                 value={editedMovie.review}

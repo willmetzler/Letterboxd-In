@@ -116,7 +116,8 @@ body {
 .review-text {
   max-height: 200px;
   overflow: auto;
-
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 .button-container {
@@ -250,4 +251,33 @@ input {
   padding: 1em;
   margin: 1em;
   border-radius: 0.5em;
+}
+
+.userpanel {
+  border: solid, #fb8304, 5px;
+  padding: 1em;
+  width: 40%;
+  border-radius: 0.5em;
+  display: flex;
+  justify-content: space-around;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-input {
+  background-color: rgba(161, 162, 184, 0.959);
+}
+
+.user-input::placeholder {
+  color: black;
+}
+
+.user-button {
+  border: solid black 2px;
+  border-radius: 0.5em;
+  background: #04e354;
 }
