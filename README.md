@@ -1,30 +1,25 @@
-# Phase 4 Project Template
+# Letterboxd In
 
-## Getting Started - Git & Github
+Modeled as an offline/privatle alternative to the popular movie reviewing social media app, Letterboxd In is a movie review web application that allows users to log in, sign up, maintain a movie diary, and create a watchlist of movies they plan to watch. This project is built with a React frontend and a Flask/Python backend.
 
-Elect one person to clone (DON'T FORK) this project to their local computer. That person will then run this command:
+## Features
+User Authentication: Users can sign up, log in, and log out.
 
-```
-git remote remove origin
-```
+Movie Diary: Logged-in users can add movies to their diary, rate them, and write reviews.
 
-Navigate to github and create a new public repository, choose not to add a README, license, or any additional information. Once the empty repo has been created, follow the directions to upload an existing repository.
+Watchlist: Logged-in users can add movies to their watchlist and move them to their diary after watching.
 
-Add your collaborators under `Settings > Collaborators` on github.
+Responsive Design: The application is designed to be responsive and user-friendly.
 
-## Getting Started - Flask
+## Technologies Used
+Frontend: React, React Router, CSS
 
-Create a `.env` file and create a line similar to this:
+Backend: Flask, SQLAlchemy
 
-```
-SECRET_KEY=abcdef1234567890
-```
+Database: SQLite
 
-You can generate a proper secret key inside a python repl like so:
 
-```
-import secrets; secrets.token_hex(16)
-```
+# Installation and Setup
 
 Inside the project run these commands:
 
@@ -34,7 +29,7 @@ pipenv shell
 cd server
 ```
 
-Begin by building your first model. From there:
+## Database Setup
 
 ```
 flask db init
@@ -42,37 +37,20 @@ flask db migrate -m "example migration message"
 flask db upgrade
 ```
 
-Any additional changes you make will only need the `flask db migrate -m "example migration message"` and `flask db upgrade`. It's recommended you build one model at a time to catch errors more easily.
-
 Once your database has been upgraded you may run the server with:
 
 ```
 python app.py
 ```
 
-In order to follow best practices with the React server proxy, begin all your route URLs with `/api` (for example `/api/users` for users route).
-
-A seed file has been provided under `seed.py`. To run the seed file:
-
+## Frontend Setup
+In a seperate terminal:
 ```
-python seed.py
-```
-
-## Getting Started - React
-
-The `client` directory contains a React template built by Vite, however you may replace it with one built by `create-react-app` or any other tool if you wish.
-
-At the end of any command using `npm`, append `--prefix client` so that it properly uses the `client` directory or else be sure to `cd client` beforehand.
-
-To start your React server, run:
-
-```
-npm install --prefix client
-npm run dev --prefix client
+cd ..
+cd client
+npm install
+npm run dev
 ```
 
-When making fetch requests, leave out the `localhost:5555` portion since a proxy already exists to that domain and instead prefix every request with `/api` to properly utilize the proxy request feature.
-
-## Conclusion
-
-Once you've completed work on this project, replace this README with one of your own devising!
+# License
+This project is licensed under the MIT License.
